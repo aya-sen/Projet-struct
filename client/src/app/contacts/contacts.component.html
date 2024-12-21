@@ -11,71 +11,8 @@
   <button (click)="showAddForm = !showAddForm">➕ Add New Contact</button>
 </div>
 
-<!-- Add Contact Form (only shown if showAddForm is true) -->
-<!-- Add Contact Form (only shown if showAddForm is true) -->
-<div *ngIf="showAddForm" class="overlay">
-  <div class="add-contact-form">
-    <button class="close" (click)="closeAddForm()">❌</button>
-    <h3>Add New Contact</h3>
-    <form (ngSubmit)="addContact()" #addContactForm="ngForm">
-      <label for="name">Full Name</label>
-      <input
-        type="text"
-        [(ngModel)]="newContact.name"
-        name="name"
-        id="name"
-        placeholder="Enter Full Name"
-        required
-        #name="ngModel"
-      />
-      <div *ngIf="name.invalid && name.touched" class="error-message">
-        Full Name is required.
-      </div>
 
-      <label for="phone">Phone Number</label>
-      <input
-        type="text"
-        [(ngModel)]="newContact.phone"
-        name="phone"
-        id="phone"
-        placeholder="Enter Phone Number"
-        pattern="^\d{10}$"
-        required
-        #phone="ngModel"
-      />
-      <div *ngIf="phone.invalid && phone.touched" class="error-message">
-        Please enter a valid 10-digit phone number.
-      </div>
-
-      <label for="email">Email Address</label>
-      <input
-        type="email"
-        [(ngModel)]="newContact.email"
-        name="email"
-        id="email"
-        placeholder="Enter Email Address"
-        required
-        #email="ngModel"
-        email
-      />
-      <div *ngIf="email.invalid && email.touched" class="error-message">
-        Please enter a valid email address.
-      </div>
-
-      <button type="submit" [disabled]="addContactForm.invalid">
-        Save Contact
-      </button>
-      <div
-        *ngIf="addContactForm.invalid && addContactForm.touched"
-        class="error-message"
-      >
-        Please fill in all the required fields correctly.
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- Add Contact Form (only shown if showAddForm is true) -->
+<!-- add Contact Form (only shown if showAddForm is true) -->
 <div *ngIf="showAddForm" class="overlay">
   <div class="add-contact-form">
     <button class="close" (click)="closeAddForm()">❌</button>
