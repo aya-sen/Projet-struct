@@ -1,0 +1,217 @@
+<!-- Title Section -->
+<div class="title">Address Book</div>
+
+<!-- Navbar Section -->
+<div class="navbar">
+  <input
+    type="text"
+    [(ngModel)]="searchQuery"
+    placeholder="Search by Name, Phone, or Email"
+  />
+  <button (click)="showAddForm = !showAddForm">➕ Add New Contact</button>
+</div>
+
+<!-- Add Contact Form (only shown if showAddForm is true) -->
+<!-- Add Contact Form (only shown if showAddForm is true) -->
+<div *ngIf="showAddForm" class="overlay">
+  <div class="add-contact-form">
+    <button class="close" (click)="closeAddForm()">❌</button>
+    <h3>Add New Contact</h3>
+    <form (ngSubmit)="addContact()" #addContactForm="ngForm">
+      <label for="name">Full Name</label>
+      <input
+        type="text"
+        [(ngModel)]="newContact.name"
+        name="name"
+        id="name"
+        placeholder="Enter Full Name"
+        required
+        #name="ngModel"
+      />
+      <div *ngIf="name.invalid && name.touched" class="error-message">
+        Full Name is required.
+      </div>
+
+      <label for="phone">Phone Number</label>
+      <input
+        type="text"
+        [(ngModel)]="newContact.phone"
+        name="phone"
+        id="phone"
+        placeholder="Enter Phone Number"
+        pattern="^\d{10}$"
+        required
+        #phone="ngModel"
+      />
+      <div *ngIf="phone.invalid && phone.touched" class="error-message">
+        Please enter a valid 10-digit phone number.
+      </div>
+
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        [(ngModel)]="newContact.email"
+        name="email"
+        id="email"
+        placeholder="Enter Email Address"
+        required
+        #email="ngModel"
+        email
+      />
+      <div *ngIf="email.invalid && email.touched" class="error-message">
+        Please enter a valid email address.
+      </div>
+
+      <button type="submit" [disabled]="addContactForm.invalid">
+        Save Contact
+      </button>
+      <div
+        *ngIf="addContactForm.invalid && addContactForm.touched"
+        class="error-message"
+      >
+        Please fill in all the required fields correctly.
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Contact Form (only shown if showAddForm is true) -->
+<div *ngIf="showAddForm" class="overlay">
+  <div class="add-contact-form">
+    <button class="close" (click)="closeAddForm()">❌</button>
+    <h3>Add New Contact</h3>
+    <form (ngSubmit)="addContact()" #addContactForm="ngForm">
+      <label for="name">Full Name</label>
+      <input
+        type="text"
+        [(ngModel)]="newContact.name"
+        name="name"
+        id="name"
+        placeholder="Enter Full Name"
+        required
+        #name="ngModel"
+      />
+      <div *ngIf="name.invalid && name.touched" class="error-message">
+        Full Name is required.
+      </div>
+
+      <label for="phone">Phone Number</label>
+      <input
+        type="text"
+        [(ngModel)]="newContact.phone"
+        name="phone"
+        id="phone"
+        placeholder="Enter Phone Number"
+        pattern="^\d{10}$"
+        required
+        #phone="ngModel"
+      />
+      <div *ngIf="phone.invalid && phone.touched" class="error-message">
+        Please enter a valid 10-digit phone number.
+      </div>
+
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        [(ngModel)]="newContact.email"
+        name="email"
+        id="email"
+        placeholder="Enter Email Address"
+        required
+        #email="ngModel"
+        email
+      />
+      <div *ngIf="email.invalid && email.touched" class="error-message">
+        Please enter a valid email address.
+      </div>
+
+      <button type="submit" [disabled]="addContactForm.invalid">
+        Save Contact
+      </button>
+      <div
+        *ngIf="addContactForm.invalid && addContactForm.touched"
+        class="error-message"
+      >
+        Please fill in all the required fields correctly.
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Contact Form (only shown if showEditForm is true) -->
+<div *ngIf="showEditForm" class="overlay">
+  <div class="edit-contact-form">
+    <button class="close" (click)="closeEditForm()">❌</button>
+    <h3>Edit Contact</h3>
+    <form (ngSubmit)="updateContact()" #editContactForm="ngForm">
+      <label for="editName">Full Name</label>
+      <input
+        type="text"
+        [(ngModel)]="selectedContact.name"
+        name="editName"
+        id="editName"
+        placeholder="Enter Full Name"
+        required
+        #editName="ngModel"
+      />
+      <div *ngIf="editName.invalid && editName.touched" class="error-message">
+        Full Name is required.
+      </div>
+
+      <label for="editPhone">Phone Number</label>
+      <input
+        type="text"
+        [(ngModel)]="selectedContact.phone"
+        name="editPhone"
+        id="editPhone"
+        placeholder="Enter Phone Number"
+        pattern="^\d{10}$"
+        required
+        #editPhone="ngModel"
+      />
+      <div *ngIf="editPhone.invalid && editPhone.touched" class="error-message">
+        Please enter a valid 10-digit phone number.
+      </div>
+
+      <label for="editEmail">Email Address</label>
+      <input
+        type="email"
+        [(ngModel)]="selectedContact.email"
+        name="editEmail"
+        id="editEmail"
+        placeholder="Enter Email Address"
+        required
+        #editEmail="ngModel"
+        email
+      />
+      <div *ngIf="editEmail.invalid && editEmail.touched" class="error-message">
+        Please enter a valid email address.
+      </div>
+
+      <button type="submit" [disabled]="editContactForm.invalid">
+        Save Changes
+      </button>
+      <div
+        *ngIf="editContactForm.invalid && editContactForm.touched"
+        class="error-message"
+      >
+        Please fill in all the required fields correctly.
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Display Contacts -->
+<div class="contacts">
+  <div *ngFor="let contact of filteredContacts()" class="contact">
+    <h3>{{ contact.name }}</h3>
+    <h3>{{ contact.phone }}</h3>
+    <h3>{{ contact.email }}</h3>
+    <button class="edit" (click)="editContact(contact)">
+      <i class="fa fa-pencil-alt"></i>
+    </button>
+    <button class="delete" (click)="deleteContact(contact)">
+      <i class="fa fa-trash-alt"></i>
+    </button>
+  </div>
+</div>
