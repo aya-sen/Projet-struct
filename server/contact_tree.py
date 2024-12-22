@@ -1,5 +1,8 @@
 # contact_tree.py
 
+import uuid
+
+
 class ContactNode:
     def __init__(self, contact):
         self.contact = contact  # Stores the contact object (name, phone, email)
@@ -30,51 +33,77 @@ class ContactTree:
             else:
                 node.right = ContactNode(contact)
 
-    def find(self, name):
-        """Find a contact by name."""
-        return self._find_recursive(self.root, name)
+    # def find(self, name):
+    #     """Find a contact by name."""
+    #     return self._find_recursive(self.root, name)
 
-    def _find_recursive(self, node, name):
-        """Helper method for recursively searching for a contact by name."""
+    # def _find_recursive(self, node, name):
+    #     """Helper method for recursively searching for a contact by name."""
+    #     if node is None:
+    #         return None
+    #     if node.contact["name"].lower() == name.lower():
+    #         return node.contact
+    #     elif name.lower() < node.contact["name"].lower():
+    #         return self._find_recursive(node.left, name)
+    #     else:
+    #         return self._find_recursive(node.right, name)
+
+    def find_by_id(self, id):
+        return self._find_by_id_recursive(self.root, id)
+
+    def _find_by_id_recursive(self, node, id):
         if node is None:
             return None
-        if node.contact["name"].lower() == name.lower():
+        if node.contact["id"] == id:
             return node.contact
-        elif name.lower() < node.contact["name"].lower():
-            return self._find_recursive(node.left, name)
-        else:
-            return self._find_recursive(node.right, name)
+        left_result = self._find_by_id_recursive(node.left, id)
+        if left_result:
+            return left_result
+        return self._find_by_id_recursive(node.right, id)
+
 
     def delete(self, name):
-        """Delete a contact by name."""
-        self.root = self._delete_recursive(self.root, name)
-
+            """Delete a contact by name."""
+            self.root = self._delete_recursive(self.root, name)
     def _delete_recursive(self, node, name):
-        """Helper method for recursively deleting a contact."""
-        if node is None:
+            """Helper method for recursively deleting a contact."""
+            if node is None:
+                return node
+            if name.lower() < node.contact["name"].lower():
+                node.left = self._delete_recursive(node.left, name)
+            elif name.lower() > node.contact["name"].lower():
+                node.right = self._delete_recursive(node.right, name)
+            else:
+                # Node to be deleted found
+                if node.left is None:
+                    return node.right
+                elif node.right is None:
+                    return node.left
+                # Node has two children
+                temp = self._min_value_node(node.right)
+                node.contact = temp.contact
+                node.right = self._delete_recursive(node.right, temp.contact["name"])
             return node
-        if name.lower() < node.contact["name"].lower():
-            node.left = self._delete_recursive(node.left, name)
-        elif name.lower() > node.contact["name"].lower():
-            node.right = self._delete_recursive(node.right, name)
-        else:
-            # Node to be deleted found
-            if node.left is None:
-                return node.right
-            elif node.right is None:
-                return node.left
-            # Node has two children
-            temp = self._min_value_node(node.right)
-            node.contact = temp.contact
-            node.right = self._delete_recursive(node.right, temp.contact["name"])
-        return node
 
     def _min_value_node(self, node):
-        """Get the node with the minimum value in the tree."""
-        current = node
-        while current.left:
-            current = current.left
-        return current
+            """Get the node with the minimum value in the tree."""
+            current = node
+            while current.left:
+                current = current.left
+            return current
+
+    # def in_order_traversal(self):
+    #         """In-order traversal of the tree to get contacts in sorted order."""
+    #         contacts = []
+    #         self._in_order_recursive(self.root, contacts)
+    #         return contacts
+
+    # def _in_order_recursive(self, node, contacts):
+    #         """Helper method for in-order traversal."""
+    #         if node:
+    #             self._in_order_recursive(node.left, contacts)
+    #             contacts.append(node.contact)
+    #             self._in_order_recursive(node.right, contacts)
 
     def in_order_traversal(self):
         """In-order traversal of the tree to get contacts in sorted order."""
@@ -86,5 +115,10 @@ class ContactTree:
         """Helper method for in-order traversal."""
         if node:
             self._in_order_recursive(node.left, contacts)
-            contacts.append(node.contact)
+            contact_with_id = {
+                "id": str(uuid.uuid4()),  # Generate unique ID
+                **node.contact,  # Include existing contact data
+            }
+            contacts.append(contact_with_id)
             self._in_order_recursive(node.right, contacts)
+
