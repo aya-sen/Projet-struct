@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-interface Contact {
+export interface Contact {
+  id: string;
   name: string;
   phone: string;
   email: string;
@@ -22,16 +23,14 @@ export class ContactService {
   }
 
   // Add a new contact
-  addContact(contact: { name: string; phone: string; email: string }) {
-    return this.http.post<{ name: string; phone: string; email: string }>(
-      'http://localhost:5000/contacts',
-      contact
-    ); // Explicitly specify the return type here
+  addContact(contact: Contact): Observable<Contact> {
+    return this.http.post<Contact>('http://127.0.0.1:5000/contacts', contact); // Use the correct URL
   }
 
   // Update a contact
-  updateContact(name: string, contact: Partial<Contact>): Observable<Contact> {
-    return this.http.put<Contact>(`${this.apiUrl}/${name}`, contact);
+  updateContact(contactId: string, updatedData: any): Observable<any> {
+    const url = `http://127.0.0.1:5000/contacts/${contactId}`;
+    return this.http.put(url, updatedData);
   }
 
   // Delete a contact
