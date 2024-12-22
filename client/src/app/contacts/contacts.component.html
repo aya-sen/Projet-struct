@@ -8,11 +8,12 @@
     [(ngModel)]="searchQuery"
     placeholder="Search by Name, Phone, or Email"
   />
-  <button (click)="showAddForm = !showAddForm"><i class="fa fa-plus"></i> Add New Contact</button>
+  <button (click)="showAddForm = !showAddForm">
+    <i class="fa fa-plus"></i> Add New Contact
+  </button>
 </div>
 
-
-<!-- add Contact Form (only shown if showAddForm is true) -->
+<!-- add Contact Form (only shown if showAddForm is true)-->
 <div *ngIf="showAddForm" class="overlay">
   <div class="add-contact-form">
     <button class="close" (click)="closeAddForm()">❌</button>
