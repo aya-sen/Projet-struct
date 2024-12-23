@@ -1,4 +1,3 @@
-<!-- Title Section -->
 <div class="title">Address Book</div>
 
 <!-- Navbar Section -->
@@ -13,7 +12,7 @@
   </button>
 </div>
 
-<!-- add Contact Form (only shown if showAddForm is true)-->
+<!-- add Contact Form -->
 <div *ngIf="showAddForm" class="overlay">
   <div class="add-contact-form">
     <button class="close" (click)="closeAddForm()">❌</button>
@@ -76,7 +75,7 @@
   </div>
 </div>
 
-<!-- Edit Contact Form (only shown if showEditForm is true) -->
+<!-- Edit Contact Form -->
 <div *ngIf="showEditForm" class="overlay">
   <div class="edit-contact-form">
     <button class="close" (click)="closeEditForm()">❌</button>
