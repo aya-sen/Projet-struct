@@ -2,10 +2,10 @@ import uuid
 
 class ContactNode:
     def __init__(self, contact):
-        self.contact = contact  # Store contact information (name, phone, email, etc.)
-        self.left = None  # Left child
-        self.right = None  # Right child
-        self.height = 1  # Height of the node for AVL balancing
+        self.contact = contact  
+        self.left = None 
+        self.right = None 
+        self.height = 1 
 
 class ContactTree:
     def __init__(self):
@@ -13,7 +13,7 @@ class ContactTree:
 
     def insert(self, contact):
         """Insert a contact into the AVL tree."""
-        contact["id"] = str(uuid.uuid4())  # Assign a unique ID to the contact
+        contact["id"] = str(uuid.uuid4())  
         self.root = self._insert_recursive(self.root, contact)
 
     def _insert_recursive(self, node, contact):
@@ -25,26 +25,26 @@ class ContactTree:
         else:
             node.right = self._insert_recursive(node.right, contact)
 
-        # Update the height of the node
+       
         node.height = 1 + max(self._get_height(node.left), self._get_height(node.right))
 
-        # Check balance and adjust if needed
+        
         balance = self._get_balance(node)
 
-        # Left Left Case
+        
         if balance > 1 and contact["name"].lower() < node.left.contact["name"].lower():
             return self._rotate_right(node)
 
-        # Right Right Case
+       
         if balance < -1 and contact["name"].lower() > node.right.contact["name"].lower():
             return self._rotate_left(node)
 
-        # Left Right Case
+       
         if balance > 1 and contact["name"].lower() > node.left.contact["name"].lower():
             node.left = self._rotate_left(node.left)
             return self._rotate_right(node)
 
-        # Right Left Case
+        
         if balance < -1 and contact["name"].lower() < node.right.contact["name"].lower():
             node.right = self._rotate_right(node.right)
             return self._rotate_left(node)
@@ -78,37 +78,36 @@ class ContactTree:
         elif name.lower() > node.contact["name"].lower():
             node.right = self._delete_recursive(node.right, name)
         else:
-            # Node to be deleted found
+           
             if not node.left:
                 return node.right
             elif not node.right:
                 return node.left
 
-            # Node with two children: Get the inorder successor
             temp = self._min_value_node(node.right)
             node.contact = temp.contact
             node.right = self._delete_recursive(node.right, temp.contact["name"])
 
-        # Update the height of the node
+       
         node.height = 1 + max(self._get_height(node.left), self._get_height(node.right))
 
-        # Check balance and adjust if needed
+       
         balance = self._get_balance(node)
 
-        # Left Left Case
+       
         if balance > 1 and self._get_balance(node.left) >= 0:
             return self._rotate_right(node)
 
-        # Left Right Case
+       
         if balance > 1 and self._get_balance(node.left) < 0:
             node.left = self._rotate_left(node.left)
             return self._rotate_right(node)
 
-        # Right Right Case
+       
         if balance < -1 and self._get_balance(node.right) <= 0:
             return self._rotate_left(node)
 
-        # Right Left Case
+        
         if balance < -1 and self._get_balance(node.right) > 0:
             node.right = self._rotate_right(node.right)
             return self._rotate_left(node)
@@ -148,14 +147,14 @@ class ContactTree:
         return self._get_height(node.left) - self._get_height(node.right) if node else 0
 
     def _min_value_node(self, node):
-        """Get the node with the smallest value (in-order successor)."""
+       
         current = node
         while current.left:
             current = current.left
         return current
 
     def in_order_traversal(self):
-        """Perform in-order traversal to get contacts sorted by name."""
+        
         contacts = []
         self._in_order_recursive(self.root, contacts)
         return contacts
@@ -165,3 +164,5 @@ class ContactTree:
             self._in_order_recursive(node.left, contacts)
             contacts.append(node.contact)
             self._in_order_recursive(node.right, contacts)
+
+   
