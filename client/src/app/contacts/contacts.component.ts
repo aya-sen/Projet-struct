@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactService } from '../contact.service';
+import { ContactService } from '../contact.service'; // Import the service
 
 interface Contact {
   id: string;
@@ -25,7 +25,7 @@ export class ContactsComponent implements OnInit {
   ngOnInit(): void {
     this.contactService.getContacts().subscribe(
       (data: Contact[]) => {
-        this.contacts = data.sort((a, b) => a.name.localeCompare(b.name));
+        this.contacts = data;
       },
       (error) => {
         console.error('Error fetching contacts:', error);
@@ -34,11 +34,12 @@ export class ContactsComponent implements OnInit {
   }
 
   addContact() {
+    this.newContact.id = this.newContact.id || this.generateUniqueId();
+
     this.contactService.addContact(this.newContact).subscribe(
       (contact: Contact) => {
         this.contacts.push(contact);
 
-        this.contacts.sort((a, b) => a.name.localeCompare(b.name));
         this.newContact = { id: '', name: '', phone: '', email: '' };
         this.showAddForm = false;
       },
@@ -73,8 +74,6 @@ export class ContactsComponent implements OnInit {
           );
           if (index !== -1) {
             this.contacts[index] = updatedContact;
-
-            this.contacts.sort((a, b) => a.name.localeCompare(b.name));
           }
           this.showEditForm = false;
         },
@@ -86,17 +85,14 @@ export class ContactsComponent implements OnInit {
 
   filteredContacts() {
     if (!this.searchQuery) {
-      return this.contacts.sort((a, b) => a.name.localeCompare(b.name));
+      return this.contacts;
     }
-
-    return this.contacts
-      .filter(
-        (contact) =>
-          contact.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          contact.phone.includes(this.searchQuery) ||
-          contact.email.toLowerCase().includes(this.searchQuery.toLowerCase())
-      )
-      .sort((a, b) => a.name.localeCompare(b.name));
+    return this.contacts.filter(
+      (contact) =>
+        contact.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        contact.phone.includes(this.searchQuery) ||
+        contact.email.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
   }
 
   closeAddForm() {
