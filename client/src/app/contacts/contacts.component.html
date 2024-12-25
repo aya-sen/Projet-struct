@@ -1,6 +1,5 @@
 <div class="title">Address Book</div>
 
-<!-- Navbar Section -->
 <div class="navbar">
   <input
     type="text"
@@ -12,7 +11,7 @@
   </button>
 </div>
 
-<!-- add Contact Form -->
+
 <div *ngIf="showAddForm" class="overlay">
   <div class="add-contact-form">
     <button class="close" (click)="closeAddForm()">❌</button>
@@ -75,7 +74,7 @@
   </div>
 </div>
 
-<!-- Edit Contact Form -->
+
 <div *ngIf="showEditForm" class="overlay">
   <div class="edit-contact-form">
     <button class="close" (click)="closeEditForm()">❌</button>
@@ -138,7 +137,7 @@
   </div>
 </div>
 
-<!-- Display Contacts -->
+
 <div class="contacts">
   <div *ngFor="let contact of filteredContacts()" class="contact">
     <h3>{{ contact.name }}</h3>
