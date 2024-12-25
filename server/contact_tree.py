@@ -12,7 +12,6 @@ class ContactTree:
         self.root = None
 
     def insert(self, contact):
-        """Insert a contact into the AVL tree."""
         contact["id"] = str(uuid.uuid4())  
         self.root = self._insert_recursive(self.root, contact)
 
@@ -46,13 +45,9 @@ class ContactTree:
         return node
 
     def update(self, contact_id, new_data):
-    
-    
         contact = self.find_by_id(contact_id)
         if not contact:
             return False 
-
-       
         old_name = contact["name"]
         if "name" in new_data and new_data["name"].lower() != old_name.lower():
             self.delete(old_name)  
@@ -65,7 +60,6 @@ class ContactTree:
         return True
 
     def find_by_id(self, id):
-        """Find a contact by its unique ID."""
         return self._find_by_id_recursive(self.root, id)
 
     def _find_by_id_recursive(self, node, id):
@@ -79,7 +73,6 @@ class ContactTree:
         return self._find_by_id_recursive(node.right, id)
 
     def delete(self, name):
-        """Delete a contact by name."""
         self.root = self._delete_recursive(self.root, name)
 
     def _delete_recursive(self, node, name):
@@ -134,7 +127,6 @@ class ContactTree:
         return y
 
     def _rotate_right(self, z):
-        """Perform a right rotation."""
         y = z.left
         T3 = y.right
 
