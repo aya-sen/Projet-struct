@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactService } from '../contact.service'; // Import the service
+import { ContactService } from '../contact.service'; 
 
 interface Contact {
   id: string;
